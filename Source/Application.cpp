@@ -1,13 +1,11 @@
 
 // ---------------- INCLUDES
-#include <imgui.h>
 #include "Application.h"
-#include "Graphics/ImguiBinding.h"
 // ----------------
 
 
 Application::Application()
-:window("Window", 1920 / 2, 1080 / 2)
+:window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT)
 {
     setup();
 }
@@ -21,19 +19,12 @@ Application::~Application() {
  * @return Success / Unsuccess
  */
 bool Application::setup() {
-    shader.loadFromFile("shader.vert", "shader.frag");
-    ImGui_ImplGlfwGL3_Init(window.getWindow(), true);
 }
 
 /**
  * Handling rendering here...
  */
 void Application::render() const {
-    ImGui_ImplGlfwGL3_NewFrame();
-    ImGui::Begin("Widget");
-    ImGui::Text("Hello World");
-    ImGui::End();
-
     shader.bindShader();
     glBegin(GL_TRIANGLES);
         glVertex3f( 0.0f, 0.5f, 0.0f);
@@ -41,7 +32,6 @@ void Application::render() const {
         glVertex3f( 0.5f,-0.5f, 0.0f);
     glEnd();
     shader.unbindShader();
-    ImGui::Render();
 }
 
 /**
@@ -49,7 +39,6 @@ void Application::render() const {
  * @return Success / Unsuccess
  */
 bool Application::clean(){
-    ImGui_ImplGlfwGL3_Shutdown();
 }
 
 /**

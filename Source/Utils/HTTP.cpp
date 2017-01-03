@@ -1,6 +1,4 @@
 
-// -------------- MACROS
-
 // -------------- INCLUDES
 #include <iostream>
 #include "HTTP.h"
@@ -20,7 +18,7 @@ size_t callBack(void *contents, size_t size, size_t nmemb, std::string *s) {
     return size * nmemb;
 }
 
-// Handle Errors - TODO
+
 HTTP_STATUS HTTP::get(std::string URL, bool follow) {
 
     // - Initialize curl
@@ -70,28 +68,3 @@ std::string HTTP::getResponse() const {
     return response;
 }
 
-/**
- * @brief Downloads SoundCloud track as MP3
- * @param URL
- * @return
- */
-std::string HTTP::getSoundCloudStream(std::string URL) {
-    if(URL.empty()) return "";
-    std::string res;
-    // - Resolve the URL
-    res = "http://api.soundcloud.com/resolve.json?url=" + URL + "&client_id=" + SOUNDCLOUD_API_KEY;
-    if (get(res) == HTTP_REJECTED) return "";
-    std::string resolve = getResponse();
-    unsigned int trackS = resolve.find("api.soundcloud.com/tracks/"), trackE = resolve.find(".json");
-    if(trackS == std::string::npos) return "";
-    res = "http://" + resolve.substr(trackS, trackE - trackS) + "/stream?client_id=" + SOUNDCLOUD_API_KEY;
-    // - Find the Stream URL
-    if (get(res) == HTTP_REJECTED) return "";
-    std::string stream = getResponse();
-    unsigned int locationS = stream.find("cf-media.sndcdn.com/");
-    if(locationS == std::string::npos) return "";
-    res = "http://" + stream.substr(locationS, stream.length() - locationS - 2);
-    // - Download the stream
-    if (get(res) == HTTP_REJECTED) return "";
-    return getResponse();
-}
