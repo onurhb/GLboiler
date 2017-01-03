@@ -23,6 +23,7 @@ public:
     ~UserInterface();
     void postRender();
     void preRender();
+    void render();
 };
 
 

@@ -5,9 +5,8 @@
 
 
 Application::Application()
-:window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT)
-{
-    setup();
+        : window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT), interface(window.getWindow()) {
+
 }
 
 Application::~Application() {
@@ -15,45 +14,33 @@ Application::~Application() {
 }
 
 /**
- * Sets up everything
- * @return Success / Unsuccess
- */
-bool Application::setup() {
-}
-
-/**
  * Handling rendering here...
  */
-void Application::render() const {
-    shader.bindShader();
-    glBegin(GL_TRIANGLES);
-        glVertex3f( 0.0f, 0.5f, 0.0f);
-        glVertex3f(-0.5f,-0.5f, 0.0f);
-        glVertex3f( 0.5f,-0.5f, 0.0f);
-    glEnd();
-    shader.unbindShader();
+void Application::render() {
+    interface.render();
 }
 
 /**
  *  Will destroy application
  * @return Success / Unsuccess
  */
-bool Application::clean(){
+void Application::update(){
 }
 
 /**
  * When called, the application will run untill window has been closed or destroyed
  * @return Success / Unsuccess
  */
-bool Application::start() {
-    setup();
+bool Application::loop() {
     while (!window.closed()) {
         window.clear();
-        // - Render
-        render();
-
+        interface.preRender();
+        {
+            render();
+            update();
+        }
+        interface.postRender();
         window.update();
     }
-    clean();
 }
 

@@ -3,7 +3,6 @@
 int main() {
     Application app;
 
-    // - Blocks
-    app.start();
+    app.loop();
     return 0;
 }

@@ -22,3 +22,10 @@ void UserInterface::preRender() {
 void UserInterface::postRender() {
     nvgEndFrame(ctx);
 }
+
+void UserInterface::render(){
+    nvgBeginPath(ctx);
+    nvgRect(ctx, 100, 200, 300, 300);
+    nvgFillColor(ctx, nvgRGB(255, 125, 125));
+    nvgFill(ctx);
+}
